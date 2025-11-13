@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-const TITLE = "Showcase — Portfolios";
+const TITLE = "Showcase - Explore creative portfolios now!";
 const DESCRIPTION = "Showcase is the creative portfolio hub where makers upload their work and teams hire fast.";
 
 const BASE_URL = "https://showcase.innpae.com";

@@ -56,7 +56,7 @@ export default function Page() {
           const linkedInHandle = extractLinkedInHandle(portfolio.linkedin)
 
           return (
-            <Card key={portfolio.id} className="group w-full overflow-hidden p-0 pb-6 transition-shadow hover:shadow-md">
+            <Card key={portfolio.id} className="group max-w-xs w-full overflow-hidden p-0 pb-6 transition-shadow hover:shadow-md">
               <div className="relative aspect-video w-full overflow-hidden bg-muted/30">
                 {portfolio.screenshotUrl ? (
                   <img
