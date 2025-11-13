@@ -18,9 +18,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
 
           <div>
-            <Button variant="outline" asChild>
+            <Button asChild>
               <Link href="/setup">
-              Add yours now!
+                Submit your portfolio
               </Link>
             </Button>
           </div>

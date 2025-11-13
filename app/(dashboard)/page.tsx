@@ -49,20 +49,20 @@ export default function Page() {
   }, [getPortfolios])
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4">
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+    <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
+      <div className="grid auto-rows-min gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {portfolios.map((portfolio) => {
           const twitterHandle = extractTwitterHandle(portfolio.twitter)
           const linkedInHandle = extractLinkedInHandle(portfolio.linkedin)
 
           return (
-            <Card key={portfolio.id} className="group overflow-hidden transition-shadow hover:shadow-md">
-              <div className="relative aspect-video w-full overflow-hidden rounded-t-xl bg-muted/30">
+            <Card key={portfolio.id} className="group w-full overflow-hidden p-0 pb-6 transition-shadow hover:shadow-md">
+              <div className="relative aspect-video w-full overflow-hidden bg-muted/30">
                 {portfolio.screenshotUrl ? (
                   <img
                     src={portfolio.screenshotUrl}
                     alt={portfolio.name}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
+                    className="absolute h-full w-full transition-transform"
                   />
                 ) : (
                   <div className="absolute inset-0 flex h-full w-full items-center justify-center text-muted-foreground">
@@ -70,7 +70,7 @@ export default function Page() {
                   </div>
                 )}
               </div>
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-1">
                 <CardTitle className="line-clamp-1 text-lg">{portfolio.name}</CardTitle>
                 <CardDescription className="line-clamp-1">
                   <Link

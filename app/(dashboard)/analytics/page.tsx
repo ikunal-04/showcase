@@ -30,7 +30,7 @@ const highlights = [
     },
 ]
 
-export default function AnalyticsPlaceholderPage() {
+export default function AnalyticsPage() {
     return (
         <div className="flex flex-1 flex-col items-center justify-center gap-10 p-8 text-center">
             <div className="flex flex-col items-center gap-3">

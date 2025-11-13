@@ -191,8 +191,8 @@ export default function SetupPage() {
     )
 
     return (
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 items-center justify-center">
-            <Card>
+        <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 items-center justify-center px-4 py-8 md:absolute md:inset-0 md:min-h-0 md:px-0 md:py-0 md:overflow-hidden">
+            <Card className="w-full md:max-h-[75vh] md:overflow-y-auto no-scrollbar">
                 <CardHeader>
                     <CardTitle className="text-2xl tracking-tight">Portfolio onboarding</CardTitle>
                     <CardDescription>
@@ -243,7 +243,7 @@ export default function SetupPage() {
                                                 />
                                             </FormControl>
                                             <FormDescription>
-                                                Drop in the live site. We&apos;ll fetch a crisp preview for you.
+                                                Drop in the live site.
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
@@ -254,13 +254,13 @@ export default function SetupPage() {
                                         <motion.div
                                             key={previewUrl}
                                             {...previewMotion}
-                                            className="overflow-hidden rounded-xl border bg-muted/20 shadow-inner"
+                                            className="mx-auto flex h-[200px] w-full max-w-[350px] items-center justify-center overflow-hidden rounded-xl border bg-muted/20 shadow-inner"
                                         >
-                                            <div className="relative aspect-16/10 w-full bg-muted/30">
+                                            <div className="relative aspect-video w-full bg-muted/30">
                                                 <motion.img
                                                     src={previewUrl}
                                                     alt="Portfolio preview"
-                                                    className="h-full w-full object-cover"
+                                                    className="h-full w-full object-fit"
                                                     initial={{ scale: 1.02 }}
                                                     animate={{ scale: 1 }}
                                                     transition={{ duration: 0.5, ease: "easeOut" }}
@@ -274,7 +274,7 @@ export default function SetupPage() {
                                         <div className="mb-3 text-sm font-medium text-muted-foreground">
                                             Capturing the latest frame…
                                         </div>
-                                        <Skeleton className="aspect-16/10 w-full rounded-lg" />
+                                        <Skeleton className="aspect-video w-full rounded-lg" />
                                     </motion.div>
                                 ) : null}
                                 {previewError ? (
@@ -295,7 +295,7 @@ export default function SetupPage() {
                                                 <FormControl>
                                                     <Input
                                                         {...field}
-                                                        placeholder="https://x.com/kunlgarg"
+                                                        placeholder="https://x.com/kunlgrg"
                                                         inputMode="url"
                                                         autoComplete="url"
                                                     />
