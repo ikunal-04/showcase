@@ -29,8 +29,6 @@ export const uploadPortfolio = async ({name, url, screenshotUrl, twitter, linked
         linkedin
     })
 
-    console.log("what teh error?", error)
-
     if(error) {
         throw new Error("Error uploading portfolio.")
     }

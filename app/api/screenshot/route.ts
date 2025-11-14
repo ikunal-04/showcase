@@ -9,8 +9,6 @@ const file_type = "png";
 export async function POST(req: NextRequest) {
     const { url } = await req.json();
 
-    console.log("what the urls", url)
-
     if(!url) {
         return NextResponse.json({status: 400, message: "No url found"})
     }

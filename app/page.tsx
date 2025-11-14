@@ -10,7 +10,7 @@ export default function Home() {
         <ScrollContext>
             <div className="min-h-screen">
                 <nav>
-                    <Navbar />
+                    <Navbar /> 
                 </nav>
                 {/* Hero Section */}
                 <section className="container mx-auto px-4 py-20 md:py-32">
