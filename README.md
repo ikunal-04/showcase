@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Showcase, A Public Directory of Developer Portfolios
 
-## Getting Started
+**Showcase** is an open-source platform where developers can submit and share their portfolio websites, all in one clean, curated directory.
 
-First, run the development server:
+Whether you're a developer looking to get discovered or a recruiter browsing talent, Showcase gives you a simple place to explore real work by real builders.
+
+---
+
+## 🌟 Features
+
+- **Submit your portfolio** in seconds  
+- **Browse a clean directory** of developer portfolios  
+- **Filter by role, stack, and region** (coming soon)  
+- **Simple screenshot previews** of each portfolio  
+- **Minimal, fast, distraction-free UI**  
+- **Open-source + community-driven**
+
+---
+
+## 🖥️ Live Demo
+
+> Coming soon — deploying to Vercel.  
+> This link will be added once live.
+
+---
+
+## 🛠️ Tech Stack
+
+- Next.js (App Router)  
+- TailwindCSS  
+- Supabase 
+- Vercel
+
+---
+
+## 📦 Getting Started
+
+### 1. Clone the repo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ikunal-04/showcase
+cd showcase
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Setup enviroment variables
 
-## Learn More
+Create a ```.env``` file in the project root:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=yoursecretkey
+SCREENSHOT_API_KEY=screenshotapikey
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Start the development Server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+bun dev
+```
+Your app will be available at: ```http://localhost:3000```
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome, even small improvements add value.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+How to contribute
+- Fork the repo
+- Create a new branch
+- Make your changes
+- Submit a pull request
+
+### Issues
+
+Check out the open issues in the issues tab above!
+
+We keep beginner-friendly tasks labeled for easy onboarding.
+
+## Support the Project
+
+If you find this useful, leave a star ⭐ on GitHub, it helps others discover it.

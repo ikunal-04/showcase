@@ -21,11 +21,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useRouter } from "next/navigation"
 
-const optionalUrl = z.union([
-    z.string().trim().length(0),
-    z.string().trim().url({ message: "Please enter a valid URL" }),
-])
+const optionalUrl = z.string().trim()
 
 const formSchema = z.object({
     name: z
@@ -61,6 +59,7 @@ export default function SetupPage() {
     const [previewError, setPreviewError] = useState<string | null>(null)
     const [submitState, setSubmitState] = useState<"idle" | "success" | "error">("idle")
     const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+    const router = useRouter();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -178,6 +177,7 @@ export default function SetupPage() {
                 linkedin: "",
             })
             setPreviewUrl(null)
+            router.push("/portfolios")
         } catch (error) {
             console.error(error)
             setSubmitState("error")

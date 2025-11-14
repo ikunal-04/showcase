@@ -17,7 +17,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
 
 const data = {
   navMain: [
@@ -27,7 +26,7 @@ const data = {
       items: [
         {
           title: "All portfolios",
-          url: "/",
+          url: "/portfolios",
         },
         {
           title: "Add your portfolio",
@@ -78,20 +77,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarGroup>
           ))}
         </div>
-        <div className="p-4 text-sm text-white" >
-          Created by {" "}
-          {/* <Badge variant="outline" asChild> */}
-            <Link
-              href={"https://x.com/kunlgarg"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center underline"
-            >
-              Kunal Garg
-            </Link>
-          {/* </Badge> */}
-          !!
+        <div className="p-4 border-t">
+        <div className="bg-muted rounded-lg p-4">
+          <h3 className="font-semibold mb-1">Need help?</h3>
+          <p className="text-sm text-muted-foreground">
+            Create your portfolio and get discovered by employers.
+          </p>
         </div>
+      </div>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
