@@ -16,7 +16,7 @@ export const getPortfolio = async () => {
     return data;
 }
 
-export const uploadPortfolio = async ({name, url, screenshotUrl, twitter, linkedin}: Portfolio) => {
+export const uploadPortfolio = async ({name, url, tag, screenshotUrl, twitter, linkedin}: Portfolio) => {
     const supabase = await createClient();
 
     const { error } = await supabase
@@ -25,6 +25,7 @@ export const uploadPortfolio = async ({name, url, screenshotUrl, twitter, linked
         name,
         url,
         screenshotUrl,
+        tag,
         twitter,
         linkedin
     })

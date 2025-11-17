@@ -6,6 +6,7 @@ export type Portfolio = {
     screenshotUrl: string;
     twitter: string;
     linkedin: string;
+    tag: string;
     createdAt?: Date;
     updatedAt?: Date;
 }

@@ -4,7 +4,7 @@
 import { usePortfoliosStore } from "@/store/portfolios"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Twitter, Linkedin, ExternalLink } from "lucide-react"
+import { Twitter, Linkedin, ExternalLink, Filter } from "lucide-react"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -16,6 +16,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const extractTwitterHandle = (url: string): string | null => {
   if (!url?.trim()) return null
@@ -51,22 +58,43 @@ const extractLinkedInHandle = (url: string): string | null => {
 
 const ITEMS_PER_PAGE = 15
 
+const PORTFOLIO_TAGS = [
+  { value: "all", label: "All Tags" },
+  { value: "Full Stack Engineer", label: "Full Stack Engineer", color: "bg-blue-500/10 text-blue-700 border-blue-200" },
+  { value: "AI Engineer", label: "AI Engineer", color: "bg-purple-500/10 text-purple-700 border-purple-200" },
+  { value: "Backend Engineer", label: "Backend Engineer", color: "bg-green-500/10 text-green-700 border-green-200" },
+  { value: "Frontend Engineer", label: "Frontend Engineer", color: "bg-orange-500/10 text-orange-700 border-orange-200" },
+  { value: "Design Engineer", label: "Design Engineer", color: "bg-pink-500/10 text-pink-700 border-pink-200" },
+]
+
 export default function Page() {
   const getPortfolios = usePortfoliosStore((state) => state.getPortfolios)
   const portfolios = usePortfoliosStore((state) => state.portfolios)
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedTag, setSelectedTag] = useState("all")
 
   useEffect(() => {
     getPortfolios();
   }, [getPortfolios])
 
-  const totalPages = Math.ceil(portfolios.length / ITEMS_PER_PAGE)
+  // Filter portfolios based on selected tag
+  const filteredPortfolios = selectedTag === "all"
+    ? portfolios
+    : portfolios.filter(portfolio => portfolio.tag === selectedTag)
+
+  const totalPages = Math.ceil(filteredPortfolios.length / ITEMS_PER_PAGE)
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCurrentPage(1)
+  }, [selectedTag])
 
   // Ensure current page is within valid range (clamp to valid page)
   const validPage = totalPages > 0 ? Math.min(Math.max(1, currentPage), totalPages) : 1
   const startIndex = (validPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
-  const currentPortfolios = portfolios.slice(startIndex, endIndex)
+  const currentPortfolios = filteredPortfolios.slice(startIndex, endIndex)
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -113,6 +141,10 @@ export default function Page() {
     return pages
   }
 
+  const getTagConfig = (tagLabel: string) => {
+    return PORTFOLIO_TAGS.find(t => t.value === tagLabel)
+  }
+
   return (
     <div className="relative flex flex-1 flex-col gap-4 p-4 sm:p-6">
       <div
@@ -123,10 +155,47 @@ export default function Page() {
           Showcase
         </span>
       </div>
-      <div className="grid auto-rows-min gap-4 sm:grid-cols-2 xl:grid-cols-3 z-10">
+
+      {/* Filter Section */}
+      <div className="z-10 flex items-center justify-between gap-4">
+        <div className="flex-1" />
+        <div className="flex items-center gap-2">
+          <Filter className="size-4 text-muted-foreground" />
+          <Select value={selectedTag} onValueChange={setSelectedTag}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filter by tag" />
+            </SelectTrigger>
+            <SelectContent>
+              {PORTFOLIO_TAGS.map((tag) => (
+                <SelectItem key={tag.value} value={tag.value}>
+                  {tag.value === "all" ? (
+                    <span>{tag.label}</span>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium ${tag.color}`}>
+                        {tag.label}
+                      </span>
+                    </div>
+                  )}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {/* Results count */}
+      {selectedTag !== "all" && (
+        <div className="z-10 text-sm text-muted-foreground">
+          Showing {filteredPortfolios.length} {filteredPortfolios.length === 1 ? 'portfolio' : 'portfolios'}
+        </div>
+      )}
+
+      <div className="grid auto-rows-min gap-4 sm:grid-cols-3 xl:grid-cols-4 z-10">
         {currentPortfolios.map((portfolio) => {
           const twitterHandle = extractTwitterHandle(portfolio.twitter)
           const linkedInHandle = extractLinkedInHandle(portfolio.linkedin)
+          const tagConfig = getTagConfig(portfolio.tag)
 
           return (
             <Card key={portfolio.id} className="group max-w-xs w-full overflow-hidden p-0 pb-6 transition-shadow hover:shadow-md z-10">
@@ -144,15 +213,28 @@ export default function Page() {
                 )}
               </div>
               <CardHeader className="pb-1">
-                <CardTitle className="line-clamp-1 text-lg">{portfolio.name}</CardTitle>
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="line-clamp-1 text-lg">
+                    {portfolio.name}
+                  </CardTitle>
+
+                  {portfolio.tag && tagConfig && (
+                    <span
+                      className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium ${tagConfig.color}`}
+                    >
+                      {portfolio.tag}
+                    </span>
+                  )}
+                </div>
+
                 <CardDescription className="line-clamp-1">
                   <Link
-                    href={portfolio.url}
+                    href={portfolio?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 hover:underline"
                   >
-                    {portfolio.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                    {portfolio?.url?.replace(/^https?:\/\//, "").replace(/\/$/, "")}
                     <ExternalLink className="size-3" />
                   </Link>
                 </CardDescription>
@@ -211,15 +293,21 @@ export default function Page() {
           )
         })}
       </div>
-      {portfolios.length === 0 && (
+      {filteredPortfolios.length === 0 && (
         <div className="z-10 flex flex-1 items-center justify-center rounded-xl border border-dashed bg-muted/20 p-12">
           <div className="text-center">
-            <p className="text-lg font-medium text-muted-foreground">No portfolios yet</p>
-            <p className="mt-1 text-sm text-muted-foreground">Add your first portfolio to get started</p>
+            <p className="text-lg font-medium text-muted-foreground">
+              {selectedTag === "all" ? "No portfolios yet" : `No portfolios found for "${selectedTag}"`}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {selectedTag === "all"
+                ? "Add your first portfolio to get started"
+                : "Try selecting a different tag"}
+            </p>
           </div>
         </div>
       )}
-      {portfolios.length > ITEMS_PER_PAGE && (
+      {filteredPortfolios.length > ITEMS_PER_PAGE && (
         <div className="z-10 mt-4">
           <Pagination>
             <PaginationContent>

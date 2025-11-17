@@ -16,7 +16,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div>
             <SidebarTrigger className="-ml-1" />
           </div>
-
           <div>
             <Button asChild>
               <Link href="https://cliff-lipstick-643.notion.site/2ab137c6bc13802fa5a3e44f8092b8e2?pvs=105">

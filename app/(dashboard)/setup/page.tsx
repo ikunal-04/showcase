@@ -21,6 +21,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { useRouter } from "next/navigation"
 
 const optionalUrl = z.string().trim()
@@ -40,9 +47,20 @@ const formSchema = z.object({
         }),
     twitter: optionalUrl,
     linkedin: optionalUrl,
+    tag: z.string().min(1, {
+        message: "Please select a tag for this portfolio",
+    }),
 })
 
 type FormValues = z.infer<typeof formSchema>
+
+const PORTFOLIO_TAGS = [
+    { value: "fullstack", label: "Full Stack Engineer", color: "bg-blue-500/10 text-blue-700 border-blue-200" },
+    { value: "ai", label: "AI Engineer", color: "bg-purple-500/10 text-purple-700 border-purple-200" },
+    { value: "backend", label: "Backend Engineer", color: "bg-green-500/10 text-green-700 border-green-200" },
+    { value: "frontend", label: "Frontend Engineer", color: "bg-orange-500/10 text-orange-700 border-orange-200" },
+    { value: "design", label: "Design Engineer", color: "bg-pink-500/10 text-pink-700 border-pink-200" },
+]
 
 const previewMotion = {
     initial: { opacity: 0, y: 12, scale: 0.98 },
@@ -68,6 +86,7 @@ export default function SetupPage() {
             url: "",
             twitter: "",
             linkedin: "",
+            tag: "",
         },
         mode: "onChange",
     })
@@ -82,6 +101,7 @@ export default function SetupPage() {
     } = form
 
     const watchedUrl = watch("url")
+    const watchedTag = watch("tag")
 
     useEffect(() => {
         if (!watchedUrl?.trim()) {
@@ -155,12 +175,15 @@ export default function SetupPage() {
             setSubmitState("idle")
             setSubmitMessage(null)
 
+            const selectedTag = PORTFOLIO_TAGS.find(t => t.value === data.tag)
+
             const payload = {
                 name: data.name.trim(),
                 url: data.url.trim(),
                 screenshotUrl: previewUrl ?? "",
                 twitter: data.twitter?.trim() ?? "",
-                linkedin: data.linkedin?.trim() ?? ""
+                linkedin: data.linkedin?.trim() ?? "",
+                tag: selectedTag?.label ?? ""
             }
 
             console.log("what the payload we're sending", payload)
@@ -175,6 +198,7 @@ export default function SetupPage() {
                 url: "",
                 twitter: "",
                 linkedin: "",
+                tag: "",
             })
             setPreviewUrl(null)
             router.push("/portfolios")
@@ -189,6 +213,8 @@ export default function SetupPage() {
         () => isSubmitting || isPreviewLoading,
         [isSubmitting, isPreviewLoading],
     )
+
+    const selectedTagConfig = PORTFOLIO_TAGS.find(t => t.value === watchedTag)
 
     return (
         <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 items-center justify-center px-4 py-8 md:absolute md:inset-0 md:min-h-0 md:px-0 md:py-0 md:overflow-hidden">
@@ -244,6 +270,39 @@ export default function SetupPage() {
                                             </FormControl>
                                             <FormDescription>
                                                 Drop in the live site.
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="tag"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+                                                Portfolio tag
+                                            </FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select a tag for this portfolio" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {PORTFOLIO_TAGS.map((tag) => (
+                                                        <SelectItem key={tag.value} value={tag.value}>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium ${tag.color}`}>
+                                                                    {tag.label}
+                                                                </span>
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormDescription>
+                                                Choose the category that best describes this portfolio.
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
