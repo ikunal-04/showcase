@@ -29,6 +29,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 const optionalUrl = z.string().trim()
 
@@ -101,7 +102,6 @@ export default function SetupPage() {
     } = form
 
     const watchedUrl = watch("url")
-    const watchedTag = watch("tag")
 
     useEffect(() => {
         if (!watchedUrl?.trim()) {
@@ -111,8 +111,8 @@ export default function SetupPage() {
         }
 
         let active = true
-        setSubmitState("idle")
-        setSubmitMessage(null)
+        // setSubmitState("idle")
+        // setSubmitMessage(null)
 
         const handler = setTimeout(async () => {
             try {
@@ -172,8 +172,8 @@ export default function SetupPage() {
 
     const onSubmit = async (data: FormValues) => {
         try {
-            setSubmitState("idle")
-            setSubmitMessage(null)
+            // setSubmitState("idle")
+            // setSubmitMessage(null)
 
             const selectedTag = PORTFOLIO_TAGS.find(t => t.value === data.tag)
 
@@ -186,12 +186,12 @@ export default function SetupPage() {
                 tag: selectedTag?.label ?? ""
             }
 
-            console.log("what the payload we're sending", payload)
-
             await addPortfolio(payload)
 
-            setSubmitState("success")
-            setSubmitMessage("Portfolio saved. We'll keep the preview handy.")
+            // setSubmitState("success")
+            // setSubmitMessage("Portfolio saved. We'll keep the preview handy.")
+
+            toast.success("Portfolio saved. We'll keep the preview handy.")
 
             reset({
                 name: "",
@@ -204,8 +204,9 @@ export default function SetupPage() {
             router.push("/portfolios")
         } catch (error) {
             console.error(error)
-            setSubmitState("error")
-            setSubmitMessage("Something went wrong while saving. Please try again.")
+            // setSubmitState("error")
+            // setSubmitMessage("Something went wrong while saving. Please try again.")
+            toast.error("Something went wrong while saving. Please try again.")
         }
     }
 
@@ -213,8 +214,6 @@ export default function SetupPage() {
         () => isSubmitting || isPreviewLoading,
         [isSubmitting, isPreviewLoading],
     )
-
-    const selectedTagConfig = PORTFOLIO_TAGS.find(t => t.value === watchedTag)
 
     return (
         <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 items-center justify-center px-4 py-8 md:absolute md:inset-0 md:min-h-0 md:px-0 md:py-0 md:overflow-hidden">

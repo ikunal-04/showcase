@@ -1,8 +1,23 @@
+"use client"
+
+import { useEffect } from "react"
+
 import { Button } from "./ui/button"
-import Link from "next/link"
 import Image from "next/image"
+import { signIn } from "next-auth/react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export function Navbar() {
+    const { data: session } = useSession()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (session) {
+            router.push("/portfolios")
+        }
+    }, [session, router])
+
     return (
         <nav className="px-4 h-16 border-b flex justify-between items-center">
             <div className="flex gap-4 items-center">
@@ -13,10 +28,8 @@ export function Navbar() {
                     <span className="font-medium">Showcase</span>
                 </div>
             </div>
-            <Button asChild>
-                <Link href="https://cliff-lipstick-643.notion.site/2ab137c6bc13802fa5a3e44f8092b8e2?pvs=105">
-                    Contact Us!
-                </Link>
+            <Button onClick={() => signIn("google")}>
+                Get Started
             </Button>
         </nav>
     )
